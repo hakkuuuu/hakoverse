@@ -1,9 +1,52 @@
 @import 'tailwindcss';
+@tailwind utilities;
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Dark background like in your image */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #a0a0a0; /* Light gray thumb */
+  border-radius: 9999px;
+  border: 2px solid #1a1a1a; /* Optional: spacing around thumb */
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #a0a0a0 #1a1a1a;
+}
 
 @custom-variant dark (&:where(.dark, .dark *));
 @theme {
   --color-primary: #a03eff;
   --color-secondary: #ff73c1;
-  --color-primary-light: #ffffff;
-  --color-primary-dark: #0c0a09;
+  --color-primary-light: #f2f2f2;
+  --color-primary-dark: #0f0f0f;
+}
+
+@layer utilities {
+  .bg-primary-gradient {
+    background-image: linear-gradient(
+      to bottom right,
+      var(--color-primary),
+      var(--color-secondary)
+    );
+  }
+  .text-primary-gradient {
+    background-image: linear-gradient(
+      to bottom right,
+      var(--color-primary),
+      var(--color-secondary)
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+  }
 }
