@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
-import { FaMoon, FaSun } from 'react-icons/fa6';
+import { FaMoon, FaSun, FaUser } from 'react-icons/fa6';
 
 export default function NavBar() {
-  const [theme, setTheme] = useState<boolean>(false);
+  const [theme, setTheme] = useState(false);
 
+  // Load theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     const isDark = savedTheme === 'dark';
-
     setTheme(isDark);
     document.documentElement.classList.toggle('dark', isDark);
   }, []);
@@ -15,11 +15,7 @@ export default function NavBar() {
   const toggleTheme = () => {
     const newTheme = !theme;
     setTheme(newTheme);
-
-    // Add or remove the dark class on <html>
     document.documentElement.classList.toggle('dark', newTheme);
-
-    // Save to localStorage
     localStorage.setItem('theme', newTheme ? 'dark' : 'light');
   };
 
@@ -28,17 +24,33 @@ export default function NavBar() {
       <img src="/logo.png" alt="Logo" className="w-8 mr-4" />
       <span className="text-xl font-bold text-primary-gradient">Hakoverse</span>
 
-      <button
-        onClick={toggleTheme}
-        className={`ml-auto p-2 transition 
-          ${
-            theme
-              ? 'bg-gray-300 rounded-full text-gray-900'
-              : 'bg-gray-900/20 rounded-full text-white'
-          }`}
-      >
-        {theme ? <FaSun size={18} /> : <FaMoon size={18} />}
-      </button>
+      <div className="flex flex-row items-center gap-4 ml-auto">
+        <button className="text-white">
+          <span
+            className="
+              flex flex-row items-center gap-2 px-5 py-3 rounded-lg 
+              bg-primary-gradient 
+              hover:opacity-90 transition
+            "
+          >
+            Login <FaUser size={18} />
+          </span>
+        </button>
+
+        <button
+          onClick={toggleTheme}
+          className={`
+            p-3 rounded-full transition-colors duration-300 
+            ${
+              theme
+                ? 'bg-gray-200 text-gray-900 hover:bg-yellow-400'
+                : 'bg-gray-800/80 text-yellow-300 hover:bg-gray-700'
+            }
+          `}
+        >
+          {theme ? <FaSun size={18} /> : <FaMoon size={18} />}
+        </button>
+      </div>
     </header>
   );
 }
