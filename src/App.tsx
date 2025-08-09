@@ -1,6 +1,6 @@
 import NavBar from './components/NavBar';
 import Sidebar from './components/SideBar';
-import Home from './components/Home';
+import Home from './pages/Home';
 
 export default function App() {
   return (
