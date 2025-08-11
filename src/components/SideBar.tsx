@@ -1,13 +1,15 @@
-// components/SideBar.tsx
 import { useEffect, useState } from 'react';
 import {
-  FaCog,
-  FaSearch,
-  FaPlus,
-  FaChevronDown,
-  FaChevronUp,
-} from 'react-icons/fa';
-import { FaHouse, FaChartSimple, FaUsers } from 'react-icons/fa6';
+  FiSettings,
+  FiSearch,
+  FiPlus,
+  FiChevronDown,
+  FiChevronUp,
+  FiHome,
+  FiTrendingUp,
+  FiUsers,
+  FiGlobe,
+} from 'react-icons/fi';
 import clsx from 'clsx';
 import { Link, useLocation } from 'react-router';
 
@@ -29,15 +31,15 @@ const SideBar = () => {
   }, [recentExpanded, communityExpanded]);
 
   const navItems = [
-    { label: 'Home', icon: <FaHouse size={20} />, href: '/' },
-    { label: 'Popular', icon: <FaChartSimple size={20} />, href: '/popular' },
-    { label: 'Answers', icon: <FaUsers size={20} />, href: '/answers' },
-    { label: 'Explore', icon: <FaSearch size={20} />, href: '/explore' },
-    { label: 'All', icon: <FaChartSimple size={20} />, href: '/all' },
+    { label: 'Home', icon: <FiHome size={20} />, href: '/' },
+    { label: 'Popular', icon: <FiTrendingUp size={20} />, href: '/popular' },
+    { label: 'Answers', icon: <FiUsers size={20} />, href: '/answers' },
+    { label: 'Explore', icon: <FiSearch size={20} />, href: '/explore' },
+    { label: 'All', icon: <FiGlobe size={20} />, href: '/all' },
   ];
 
   return (
-    <aside className="bg-primary-light dark:bg-primary-dark text-stone-700 dark:text-white w-64 h-screen hidden md:block border-r border-stone-400 dark:border-white/20 overflow-y-auto">
+    <aside className="bg-primary-light dark:bg-primary-dark text-neutral-700 dark:text-white w-64 h-screen hidden md:block border-r border-neutral-400 dark:border-white/20 overflow-y-auto">
       <nav className="p-4">
         <ul>
           {navItems.map(({ label, icon, href }) => {
@@ -52,7 +54,7 @@ const SideBar = () => {
                     'flex items-center gap-3 p-3 rounded transition',
                     isActive
                       ? 'bg-primary-gradient text-white font-semibold'
-                      : 'hover:bg-stone-200 dark:hover:bg-white/10'
+                      : 'hover:bg-neutral-200 dark:hover:bg-white/10'
                   )}
                 >
                   {icon}
@@ -69,12 +71,13 @@ const SideBar = () => {
             onClick={() => setRecentExpanded(!recentExpanded)}
             className="flex justify-between items-center w-full mt-6 mb-2 text-xs font-semibold tracking-widest uppercase"
           >
-            Recent {recentExpanded ? <FaChevronUp /> : <FaChevronDown />}
+            Recent {recentExpanded ? <FiChevronUp /> : <FiChevronDown />}
           </button>
           {recentExpanded && (
             <ul className="ml-2">
-              {/* Placeholder for recent items */}
-              <li className="text-stone-500 text-sm p-4">No recent items</li>
+              <li className="text-neutral-400 dark:text-neutral-600 text-sm p-4">
+                No recent items
+              </li>
             </ul>
           )}
         </div>
@@ -86,24 +89,24 @@ const SideBar = () => {
             className="flex justify-between items-center w-full mt-6 mb-2 text-xs font-semibold tracking-widest uppercase"
           >
             Communities{' '}
-            {communityExpanded ? <FaChevronUp /> : <FaChevronDown />}
+            {communityExpanded ? <FiChevronUp /> : <FiChevronDown />}
           </button>
           {communityExpanded && (
             <ul className="ml-2">
               <li className="my-2">
                 <a
                   href="#"
-                  className="flex items-center gap-3 p-3 rounded hover:bg-stone-200 dark:hover:bg-white/10 transition"
+                  className="flex items-center gap-3 p-3 rounded hover:bg-neutral-200 dark:hover:bg-white/10 transition"
                 >
-                  <FaPlus /> Create Community
+                  <FiPlus /> Create Community
                 </a>
               </li>
               <li className="my-2">
                 <a
                   href="#"
-                  className="flex items-center gap-3 p-3 rounded hover:bg-stone-200 dark:hover:bg-white/10 transition"
+                  className="flex items-center gap-3 p-3 rounded hover:bg-neutral-200 dark:hover:bg-white/10 transition"
                 >
-                  <FaCog /> Manage Communities
+                  <FiSettings /> Manage Communities
                 </a>
               </li>
             </ul>

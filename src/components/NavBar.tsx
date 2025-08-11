@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { FaMoon, FaSun, FaUser, FaMagnifyingGlass } from 'react-icons/fa6';
+// import { FaUser, FaMagnifyingGlass } from 'react-icons/fa6';
+import { FiSun, FiMoon, FiUser, FiSearch } from 'react-icons/fi';
 
 export default function NavBar() {
   const [theme, setTheme] = useState(false);
@@ -44,7 +45,7 @@ export default function NavBar() {
               transition
             "
           />
-          <FaMagnifyingGlass
+          <FiSearch
             className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400"
             size={14}
           />
@@ -61,7 +62,7 @@ export default function NavBar() {
               hover:opacity-90 transition
             "
           >
-            Login <FaUser size={16} />
+            Login <FiUser size={16} />
           </span>
         </button>
 
@@ -71,12 +72,12 @@ export default function NavBar() {
             p-3 rounded-full transition-colors duration-300 
             ${
               theme
-                ? 'bg-gray-200 text-gray-900 hover:bg-yellow-400'
-                : 'bg-gray-800/80 text-yellow-300 hover:bg-gray-700'
+                ? 'text-neutral-200 hover:bg-neutral-700'
+                : ' text-neutral-700 hover:bg-neutral-200'
             }
           `}
         >
-          {theme ? <FaSun size={16} /> : <FaMoon size={16} />}
+          {theme ? <FiSun size={18} /> : <FiMoon size={18} />}
         </button>
       </div>
     </header>
