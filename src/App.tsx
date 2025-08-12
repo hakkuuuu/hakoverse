@@ -3,6 +3,9 @@ import NavBar from './components/NavBar';
 import Sidebar from './components/SideBar';
 import Home from './pages/Home';
 import Popular from './pages/Popular';
+import Answers from './pages/Answers';
+import Explore from './pages/Explore';
+import All from './pages/All';
 
 function Layout() {
   return (
@@ -25,6 +28,9 @@ export default function App() {
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
         <Route path="popular" element={<Popular />} />
+        <Route path="answers" element={<Answers />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="all" element={<All />} />
       </Route>
     </Routes>
   );

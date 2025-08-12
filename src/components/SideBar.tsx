@@ -39,7 +39,7 @@ const SideBar = () => {
   ];
 
   return (
-    <aside className="bg-primary-light dark:bg-primary-dark text-neutral-700 dark:text-white w-64 h-screen hidden md:block border-r border-neutral-400 dark:border-white/20 overflow-y-auto">
+    <aside className="bg-primary-light dark:bg-primary-dark text-neutral-700 dark:text-primary-light w-64 h-screen hidden md:block border-r border-neutral-400 dark:border-white/20 overflow-y-auto">
       <nav className="p-4">
         <ul>
           {navItems.map(({ label, icon, href }) => {
@@ -53,7 +53,7 @@ const SideBar = () => {
                   className={clsx(
                     'flex items-center gap-3 p-3 rounded transition',
                     isActive
-                      ? 'bg-primary-gradient text-white font-semibold'
+                      ? 'bg-primary-gradient text-primary-light font-semibold'
                       : 'hover:bg-neutral-200 dark:hover:bg-white/10'
                   )}
                 >
