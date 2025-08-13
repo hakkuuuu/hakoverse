@@ -89,6 +89,7 @@ export default function NavBar() {
         </button>
       </div>
 
+
       {/* Mobile Drawer */}
       <div
         className={`fixed inset-0 z-30 bg-primary-dark backdrop-blur-sm transition-opacity duration-300 ${
