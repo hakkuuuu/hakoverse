@@ -25,6 +25,7 @@ export const MobileDrawer = ({
       }`}
       onClick={onClose}
     />
+
     <div
       className={`fixed top-0 left-0 h-full w-64 bg-primary-light dark:bg-primary-dark shadow-lg z-40 transform transition-transform duration-300 ${
         isOpen ? 'translate-x-0' : '-translate-x-full'
@@ -62,13 +63,14 @@ export const MobileDrawer = ({
       <div className="p-4">
         {user ? (
           <div className="space-y-2">
-            <div className="flex items-center gap-3 px-4 py-2">
-              <div className="w-10 h-10 rounded-full overflow-hidden">
+            <div className="flex items-center gap-3 py-4">
+              <div className="w-12 rounded-full overflow-hidden">
                 {user?.user_metadata?.avatar_url ? (
                   <img
                     src={user.user_metadata.avatar_url}
                     alt="Profile"
-                    className="w-full h-full object-cover"
+                    className="rounded-full w-10 object-cover"
+                    loading="lazy"
                   />
                 ) : (
                   <div className="w-full h-full bg-primary-gradient flex items-center justify-center text-white">
