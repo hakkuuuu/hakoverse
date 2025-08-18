@@ -56,4 +56,13 @@ html {
     color: transparent;
     display: inline-block; /* important */
   }
+  .dropdown-item {
+    @apply flex items-center gap-2 w-full px-4 py-2 text-left cursor-pointer 
+         text-neutral-700 dark:text-neutral-200
+         hover:bg-neutral-200 dark:hover:bg-neutral-700;
+  }
+
+  .dropdown-divider {
+    @apply border-t border-neutral-200 dark:border-neutral-700;
+  }
 }

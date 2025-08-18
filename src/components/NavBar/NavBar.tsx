@@ -1,30 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { FiMenu } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { ProfileSection } from './components/ProfileSection';
 import { MobileDrawer } from './components/MobileDrawer';
 import { SearchBar } from './components/SearchBar';
-import { ThemeToggle } from './components/ThemeToggle';
+// import { ThemeToggle } from './components/ThemeToggle';
 import { LoginButton } from './components/LoginButton';
 
 export default function NavBar() {
-  const [theme, setTheme] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { user, signIn, signOut } = useAuth();
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem('theme');
-    const isDark = savedTheme === 'dark';
-    setTheme(isDark);
-    document.documentElement.classList.toggle('dark', isDark);
-  }, []);
-
-  const toggleTheme = () => {
-    const newTheme = !theme;
-    setTheme(newTheme);
-    document.documentElement.classList.toggle('dark', newTheme);
-    localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-  };
 
   const handleSignOut = async () => {
     await signOut();
@@ -54,7 +39,6 @@ export default function NavBar() {
         ) : (
           <LoginButton onSignIn={signIn} />
         )}
-        <ThemeToggle isDark={theme} onToggle={toggleTheme} />
       </div>
 
       <MobileDrawer
