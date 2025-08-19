@@ -1,10 +1,10 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import type { User } from '@supabase/supabase-js';
+import type { User, Provider } from '@supabase/supabase-js';
 import { supabase } from '../supabase-client';
 
 interface AuthContextType {
   user: User | null;
-  signIn: () => Promise<void>;
+  signInWithProvider: (provider: Provider) => Promise<void>;
   signOut: () => Promise<void>;
 }
 
@@ -36,18 +36,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  const signIn = async () => {
+  const signInWithProvider = async (provider: Provider) => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'github',
+        provider,
         options: {
           redirectTo: window.location.origin,
+          queryParams:
+            provider === 'google'
+              ? {
+                  access_type: 'offline',
+                  prompt: 'consent',
+                }
+              : undefined,
         },
       });
 
       if (error) throw error;
     } catch (error) {
-      console.error('Error signing in:', error);
+      console.error(`Error signing in with ${provider}:`, error);
     }
   };
 
@@ -62,12 +69,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, signInWithProvider, signOut }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

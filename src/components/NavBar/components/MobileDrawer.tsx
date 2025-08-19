@@ -1,11 +1,12 @@
-import { FiX, FiSearch, FiUser, FiLogOut } from 'react-icons/fi';
-import type { User as SupabaseUser } from '@supabase/supabase-js';
+import { FiX, FiGithub, FiLogOut } from 'react-icons/fi';
+import { FcGoogle } from 'react-icons/fc';
+import type { User, Provider } from '@supabase/supabase-js';
 
 interface MobileDrawerProps {
   isOpen: boolean;
-  user: SupabaseUser | null;
+  user: User | null;
   onClose: () => void;
-  onSignIn: () => void;
+  onSignIn: (provider: Provider) => Promise<void>;
   onSignOut: () => void;
 }
 
@@ -47,20 +48,6 @@ export const MobileDrawer = ({
       </div>
 
       <div className="p-4">
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full px-4 py-2 pl-10 rounded-2xl bg-neutral-300/10 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-200 border border-neutral-300 dark:border-neutral-700 focus:outline-none focus:ring-2 focus:ring-primary-gradient transition"
-          />
-          <FiSearch
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-500 dark:text-neutral-400"
-            size={14}
-          />
-        </div>
-      </div>
-
-      <div className="p-4">
         {user ? (
           <div className="space-y-2">
             <div className="flex items-center gap-3 py-4">
@@ -96,11 +83,22 @@ export const MobileDrawer = ({
             </button>
           </div>
         ) : (
-          <button onClick={onSignIn} className="w-full text-primary-light">
-            <span className="flex justify-center items-center gap-2 px-5 py-2 rounded-lg bg-primary-gradient hover:opacity-90 transition">
-              Login <FiUser size={16} />
-            </span>
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={() => onSignIn('github')}
+              className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-neutral-900 text-primary-dark dark:text-primary-light hover:bg-neutral-800 transition"
+            >
+              <FiGithub size={20} />
+              Continue with GitHub
+            </button>
+            <button
+              onClick={() => onSignIn('google')}
+              className="flex items-center justify-center gap-2 w-full px-4 py-2 rounded-lg bg-white text-primary-light dark:text-primary-dark border border-neutral-300 hover:bg-gray-50 transition"
+            >
+              <FcGoogle size={20} />
+              Continue with Google
+            </button>
+          </div>
         )}
       </div>
     </div>

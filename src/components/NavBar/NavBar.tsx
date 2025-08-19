@@ -9,7 +9,7 @@ import { LoginButton } from './components/LoginButton';
 
 export default function NavBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { user, signIn, signOut } = useAuth();
+  const { user, signInWithProvider, signOut } = useAuth();
 
   const handleSignOut = async () => {
     await signOut();
@@ -37,7 +37,7 @@ export default function NavBar() {
         {user ? (
           <ProfileSection user={user} onSignOut={handleSignOut} />
         ) : (
-          <LoginButton onSignIn={signIn} />
+          <LoginButton onSignIn={signInWithProvider} />
         )}
       </div>
 
@@ -45,7 +45,7 @@ export default function NavBar() {
         isOpen={drawerOpen}
         user={user}
         onClose={() => setDrawerOpen(false)}
-        onSignIn={signIn}
+        onSignIn={signInWithProvider}
         onSignOut={handleSignOut}
       />
     </header>
