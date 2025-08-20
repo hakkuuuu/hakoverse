@@ -51,7 +51,7 @@ const SideBar = () => {
                 <Link
                   to={href}
                   className={clsx(
-                    'flex items-center gap-3 p-3 rounded transition',
+                    'flex items-center gap-3 p-3 rounded-xl transition',
                     isActive
                       ? 'bg-primary-gradient text-primary-light font-semibold'
                       : 'hover:bg-neutral-200 dark:hover:bg-white/10'
