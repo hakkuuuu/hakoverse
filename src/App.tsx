@@ -6,6 +6,7 @@ import Popular from './pages/Popular';
 import Answers from './pages/Answers';
 import Explore from './pages/Explore';
 import All from './pages/All';
+import CreatePost from './pages/CreatePost';
 
 function Layout() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />
+        <Route path="/create-post" element={<CreatePost />} />
         <Route path="popular" element={<Popular />} />
         <Route path="answers" element={<Answers />} />
         <Route path="explore" element={<Explore />} />

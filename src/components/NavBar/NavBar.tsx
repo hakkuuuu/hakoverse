@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { FiMenu } from 'react-icons/fi';
+import { FiMenu, FiPlusCircle } from 'react-icons/fi';
 import { useAuth } from '../../context/AuthContext';
 import { ProfileSection } from './components/ProfileSection';
 import { MobileDrawer } from './components/MobileDrawer';
 import { SearchBar } from './components/SearchBar';
 // import { ThemeToggle } from './components/ThemeToggle';
 import { LoginButton } from './components/LoginButton';
+import { Link } from 'react-router';
 
 export default function NavBar() {
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -35,7 +36,16 @@ export default function NavBar() {
 
       <div className="flex items-center gap-4">
         {user ? (
-          <ProfileSection user={user} onSignOut={handleSignOut} />
+          <>
+            <Link
+              to="/create-post"
+              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-3xl text-primary-light hover:bg-neutral-800 bg-primary-dark"
+            >
+              <FiPlusCircle size={16} />
+              <span>Create Post</span>
+            </Link>
+            <ProfileSection user={user} onSignOut={handleSignOut} />
+          </>
         ) : (
           <LoginButton onSignIn={signInWithProvider} />
         )}
