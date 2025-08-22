@@ -23,11 +23,22 @@ html {
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
+  /* Base colors */
   --color-primary: #a03eff;
   --color-secondary: #ff73c1;
   --color-primary-light: #f2f2f2;
   --color-primary-dark: #0f0f0f;
+
+  /* Variants */
+  --color-primary-100: #d9b3ff; /* light */
+  --color-primary-500: #a03eff; /* default */
+  --color-primary-700: #6b00cc; /* darker */
+
+  --color-secondary-100: #ffcce9; /* light */
+  --color-secondary-500: #ff73c1; /* default */
+  --color-secondary-700: #cc2a8c; /* darker */
 }
 
 @layer utilities {
@@ -70,14 +81,14 @@ html {
   }
 
   .input-base {
-    @apply w-full p-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500;
+    @apply w-full p-2 rounded-lg border border-neutral-300 dark:border-neutral-700 bg-transparent focus:outline-none focus:ring-2 focus:ring-primary-500;
   }
 
   .action-btn {
-    @apply flex items-center gap-1 px-2 py-1 rounded hover:bg-neutral-200 dark:hover:bg-neutral-800 transition;
+    @apply flex items-center gap-1 px-4 py-2 rounded-xl hover:text-secondary-500 hover:bg-neutral-200 dark:hover:bg-neutral-800 transition;
   }
 
   .primary-btn {
-    @apply px-4 py-2 rounded-lg bg-blue-500 text-white font-medium hover:bg-blue-600 transition;
+    @apply px-4 py-2 rounded-xl bg-primary text-white font-medium hover:bg-primary-700 transition;
   }
 }
