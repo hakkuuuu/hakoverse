@@ -6,10 +6,25 @@ import { useMutation } from '@tanstack/react-query';
 interface PostInput {
   title: string;
   body: string;
+  image_url?: string;
 }
 
-const createPost = async (post: PostInput) => {
-  const { data, error } = await supabase.from('posts').insert([post]);
+const createPost = async (post: PostInput, imageFile: File) => {
+  const filePath = `${post.title}-${Date.now()}-${imageFile.name}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from('posts-images')
+    .upload(filePath, imageFile);
+
+  if (uploadError) throw new Error(uploadError.message);
+
+  const { data: imageData } = supabase.storage
+    .from('posts-images')
+    .getPublicUrl(filePath);
+
+  const { data, error } = await supabase
+    .from('posts')
+    .insert({ ...post, image_url: imageData.publicUrl });
 
   if (error) throw new Error(error.message);
 
@@ -19,13 +34,25 @@ const createPost = async (post: PostInput) => {
 export default function CreatePost() {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [file, setFile] = useState<File | null>(null);
 
-  const { mutate } = useMutation({ mutationFn: createPost });
+  const { mutate } = useMutation({
+    mutationFn: (data: { post: PostInput; imageFile: File }) => {
+      return createPost(data.post, data.imageFile);
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!title.trim()) return;
-    mutate({ title, body });
+    if (!file) return;
+    mutate({ post: { title, body }, imageFile: file! });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
   };
 
   return (
@@ -55,9 +82,16 @@ export default function CreatePost() {
           {/* Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400">
-              <button type="button" className="action-btn">
+              <label htmlFor="image" className="action-btn cursor-pointer">
                 <FiImage /> Image
-              </button>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="hidden"
+                />
+              </label>
               <button type="button" className="action-btn">
                 <FiLink /> Link
               </button>
