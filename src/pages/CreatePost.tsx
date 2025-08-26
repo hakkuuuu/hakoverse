@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { FiImage, FiLink, FiMessageSquare } from 'react-icons/fi';
-import { supabase } from '../supabase-client';
+import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
+import { supabase } from '../supabase-client';
 
 interface PostInput {
   title: string;
@@ -9,44 +11,92 @@ interface PostInput {
   image_url?: string;
 }
 
+const sanitizeFileName = (fileName: string): string => {
+  return fileName
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '-') // Replace special chars with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+};
+
 const createPost = async (post: PostInput, imageFile: File) => {
-  const filePath = `${post.title}-${Date.now()}-${imageFile.name}`;
+  // Sanitize the title and file name
+  const sanitizedTitle = sanitizeFileName(post.title);
+  const sanitizedFileName = sanitizeFileName(imageFile.name);
+  const fileExt = imageFile.name.split('.').pop();
 
-  const { error: uploadError } = await supabase.storage
-    .from('posts-images')
-    .upload(filePath, imageFile);
+  // Create unique file path with sanitized names
+  const filePath = `${sanitizedTitle}-${Date.now()}-${sanitizedFileName}.${fileExt}`;
 
-  if (uploadError) throw new Error(uploadError.message);
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from('posts-images')
+      .upload(filePath, imageFile);
 
-  const { data: imageData } = supabase.storage
-    .from('posts-images')
-    .getPublicUrl(filePath);
+    if (uploadError) throw new Error(uploadError.message);
 
-  const { data, error } = await supabase
-    .from('posts')
-    .insert({ ...post, image_url: imageData.publicUrl });
+    const { data: imageData } = supabase.storage
+      .from('posts-images')
+      .getPublicUrl(filePath);
 
-  if (error) throw new Error(error.message);
+    const { data, error } = await supabase
+      .from('posts')
+      .insert({ ...post, image_url: imageData.publicUrl })
+      .select()
+      .single();
 
-  return data;
+    if (error) throw new Error(error.message);
+
+    return data;
+  } catch (error) {
+    throw new Error(
+      error instanceof Error ? error.message : 'Failed to create post'
+    );
+  }
 };
 
 export default function CreatePost() {
+  const navigate = useNavigate();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [file, setFile] = useState<File | null>(null);
 
-  const { mutate } = useMutation({
-    mutationFn: (data: { post: PostInput; imageFile: File }) => {
-      return createPost(data.post, data.imageFile);
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: { post: PostInput; imageFile: File }) =>
+      createPost(data.post, data.imageFile),
+    onSuccess: () => {
+      toast.success('Post created successfully!');
+      navigate('/');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || 'Failed to create post');
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim()) return;
-    if (!file) return;
-    mutate({ post: { title, body }, imageFile: file! });
+
+    if (!title.trim()) {
+      toast.error('Title is required');
+      return;
+    }
+
+    if (!file) {
+      toast.error('Image is required');
+      return;
+    }
+
+    // Create loading toast
+    const loadingToast = toast.loading('Creating post...');
+
+    mutate(
+      { post: { title, body }, imageFile: file },
+      {
+        onSettled: () => {
+          toast.dismiss(loadingToast);
+        },
+      }
+    );
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -68,6 +118,7 @@ export default function CreatePost() {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Title"
             className="input-base"
+            disabled={isPending}
           />
 
           {/* Body */}
@@ -77,12 +128,18 @@ export default function CreatePost() {
             placeholder="What's on your mind?"
             rows={5}
             className="input-base resize-none"
+            disabled={isPending}
           />
 
           {/* Actions */}
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-neutral-600 dark:text-neutral-400">
-              <label htmlFor="image" className="action-btn cursor-pointer">
+              <label
+                htmlFor="image"
+                className={`action-btn cursor-pointer ${
+                  isPending ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
+              >
                 <FiImage /> Image
                 <input
                   type="file"
@@ -90,19 +147,24 @@ export default function CreatePost() {
                   accept="image/*"
                   onChange={handleFileChange}
                   className="hidden"
+                  disabled={isPending}
                 />
               </label>
-              <button type="button" className="action-btn">
+              <button type="button" className="action-btn" disabled={isPending}>
                 <FiLink /> Link
               </button>
-              <button type="button" className="action-btn">
+              <button type="button" className="action-btn" disabled={isPending}>
                 <FiMessageSquare /> Text
               </button>
             </div>
 
             {/* Submit */}
-            <button type="submit" className="primary-btn">
-              Post
+            <button
+              type="submit"
+              className="primary-btn disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isPending}
+            >
+              {isPending ? 'Creating...' : 'Post'}
             </button>
           </div>
         </form>
