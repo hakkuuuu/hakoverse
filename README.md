@@ -2,7 +2,7 @@
 
 A **Reddit-clone social media app** built with React, Supabase, and modern web tools.
 
-![Demo](./demo.png)
+![Demo](https://raw.githubusercontent.com/hakkuuuu/hakoverse/main/public/demo.png)
 
 ---
 
