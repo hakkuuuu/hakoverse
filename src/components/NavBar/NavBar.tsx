@@ -39,7 +39,7 @@ export default function NavBar() {
           <>
             <Link
               to="/create-post"
-              className="hidden lg:flex items-center gap-2 px-4 py-2 rounded-3xl text-primary-light hover:bg-neutral-800 bg-primary-dark"
+              className="hidden action-btn dark:text-primary-light lg:flex"
             >
               <FiPlusCircle size={16} />
               <span>Create Post</span>

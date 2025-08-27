@@ -72,6 +72,40 @@ const EmptyState = () => (
   </div>
 );
 
+const PostSkeleton = () => (
+  <div className="animate-pulse">
+    <div className="rounded-2xl p-4 max-w-3xl mx-auto flex flex-col justify-between bg-neutral-100 dark:bg-primary-light/5">
+      {/* Title skeleton */}
+      <div className="h-6 bg-neutral-200 dark:bg-neutral-700 rounded-lg w-3/4 mb-4" />
+
+      {/* Image skeleton */}
+      <div className="h-[240px] bg-neutral-200 dark:bg-neutral-700 rounded-xl mb-4" />
+
+      {/* Actions skeleton */}
+      <div className="flex gap-3">
+        <div className="h-8 w-24 bg-neutral-200 dark:bg-neutral-700 rounded-lg" />
+        <div className="h-8 w-20 bg-neutral-200 dark:bg-neutral-700 rounded-lg" />
+        <div className="h-8 w-20 bg-neutral-200 dark:bg-neutral-700 rounded-lg" />
+      </div>
+    </div>
+    <div className="max-w-3xl mx-auto border-t border-neutral-300 dark:border-neutral-600 my-6" />
+  </div>
+);
+
+const RecentPostSkeleton = () => (
+  <div className="animate-pulse space-y-4">
+    {[1, 2, 3, 4, 5].map((index) => (
+      <div
+        key={index}
+        className="border-b border-neutral-300 dark:border-neutral-700 pb-3 last:border-none"
+      >
+        <div className="h-4 bg-neutral-200 dark:bg-neutral-700 rounded w-3/4 mb-2" />
+        <div className="h-3 bg-neutral-200 dark:bg-neutral-700 rounded w-1/2" />
+      </div>
+    ))}
+  </div>
+);
+
 export default function Home() {
   const queryClient = useQueryClient();
 
@@ -128,9 +162,22 @@ export default function Home() {
 
   if (postsLoading || recentPostsLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-dark"></div>
-      </div>
+      <main className="min-h-screen p-4 sm:p-6 text-neutral-700 bg-primary-light dark:bg-primary-dark dark:text-primary-light">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-6">
+          {/* Main posts skeleton */}
+          <div className="flex-1">
+            {[1, 2, 3].map((index) => (
+              <PostSkeleton key={index} />
+            ))}
+          </div>
+
+          {/* Recent posts skeleton */}
+          <aside className="w-full lg:w-80 max-h-[80vh] bg-neutral-300/20 dark:bg-primary-light/5 rounded-xl border-primary-dark p-4">
+            <div className="h-6 bg-neutral-200 dark:bg-neutral-700 rounded w-1/3 mb-4" />
+            <RecentPostSkeleton />
+          </aside>
+        </div>
+      </main>
     );
   }
 
