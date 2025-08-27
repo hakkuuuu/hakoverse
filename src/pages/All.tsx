@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function All() {
   return (
     <main className="min-h-screen p-6 text-neutral-700 bg-primary-light dark:bg-primary-dark dark:text-white">
