@@ -76,7 +76,7 @@ const SideBar = () => {
           {recentExpanded && (
             <ul className="ml-2">
               <li className="text-neutral-400 dark:text-neutral-600 text-sm p-4">
-                No recent items
+                No recent activities
               </li>
             </ul>
           )}
@@ -96,7 +96,7 @@ const SideBar = () => {
               <li className="my-2">
                 <a
                   href="#"
-                  className="flex items-center gap-3 p-3 rounded hover:bg-neutral-200 dark:hover:bg-white/10 transition"
+                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-200 dark:hover:bg-white/10 transition"
                 >
                   <FiPlus /> Create Community
                 </a>
@@ -104,7 +104,7 @@ const SideBar = () => {
               <li className="my-2">
                 <a
                   href="#"
-                  className="flex items-center gap-3 p-3 rounded hover:bg-neutral-200 dark:hover:bg-white/10 transition"
+                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-neutral-200 dark:hover:bg-white/10 transition"
                 >
                   <FiSettings /> Manage Communities
                 </a>

@@ -60,7 +60,7 @@ export const ProfileSection = ({ user, onSignOut }: ProfileSectionProps) => {
   return (
     <div className="relative group hidden lg:block">
       {/* Trigger */}
-      <button className="flex items-center gap-4 p-1 rounded-3xl hover:bg-neutral-300 dark:hover:bg-neutral-800 transition-all duration-150 ease-in-out">
+      <button className="flex items-center gap-4 p-1 rounded-3xl hover:bg-neutral-200 dark:hover:bg-neutral-800 transition-all duration-150 ease-in-out">
         <span className="text-primary-dark dark:text-primary-light pl-2">
           {user.user_metadata?.name || 'Profile'}
         </span>
