@@ -1,14 +1,6 @@
 import { FiX, FiGithub, FiLogOut } from 'react-icons/fi';
 import { FcGoogle } from 'react-icons/fc';
-import type { User, Provider } from '@supabase/supabase-js';
-
-interface MobileDrawerProps {
-  isOpen: boolean;
-  user: User | null;
-  onClose: () => void;
-  onSignIn: (provider: Provider) => Promise<void>;
-  onSignOut: () => void;
-}
+import type { MobileDrawerProps } from '../../../types';
 
 export const MobileDrawer = ({
   isOpen,

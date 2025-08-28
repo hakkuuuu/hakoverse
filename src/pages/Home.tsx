@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '../supabase-client';
+import { postService } from '../services/posts';
 import {
   EmptyState,
   PostSkeleton,
@@ -7,61 +7,6 @@ import {
   PostCard,
   RecentPostsList,
 } from '../components/Home';
-import type { Post } from '../types';
-
-// Fetch functions
-const getPosts = async (): Promise<Post[]> => {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) throw error;
-
-  return (data || []).map((post) => ({
-    ...post,
-    upvotes: post.upvotes || 0,
-    comments_count: post.comments_count || 0,
-  }));
-};
-
-const getRecentPosts = async (): Promise<Post[]> => {
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false })
-    .limit(5);
-
-  if (error) throw error;
-
-  return (data || []).map((post) => ({
-    ...post,
-    upvotes: post.upvotes || 0,
-    comments_count: post.comments_count || 0,
-  }));
-};
-
-const postService = {
-  getPosts,
-  getRecentPosts,
-  updateVote: async (
-    postId: number,
-    currentUpvotes: number,
-    type: 'up' | 'down'
-  ) => {
-    const { data, error } = await supabase
-      .from('posts')
-      .update({
-        upvotes: type === 'up' ? currentUpvotes + 1 : currentUpvotes - 1,
-      })
-      .eq('id', postId)
-      .select()
-      .single();
-
-    if (error) throw error;
-    return data;
-  },
-};
 
 export default function Home() {
   const queryClient = useQueryClient();
@@ -77,13 +22,7 @@ export default function Home() {
   });
 
   const voteMutation = useMutation({
-    mutationFn: async ({
-      postId,
-      type,
-    }: {
-      postId: number;
-      type: 'up' | 'down';
-    }) => {
+    mutationFn: async ({ postId, type }: { postId: number; type: 'up' | 'down' }) => {
       const post = posts?.find((p) => p.id === postId);
       if (!post) throw new Error('Post not found');
       return postService.updateVote(postId, post.upvotes, type);
@@ -108,9 +47,7 @@ export default function Home() {
               <div key={post.id}>
                 <PostCard
                   post={post}
-                  onVote={(postId, type) =>
-                    voteMutation.mutate({ postId, type })
-                  }
+                  onVote={(postId, type) => voteMutation.mutate({ postId, type })}
                   isVoting={voteMutation.isPending}
                 />
                 {index !== posts.length - 1 && <Divider />}

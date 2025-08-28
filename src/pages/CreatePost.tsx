@@ -4,19 +4,14 @@ import { useNavigate } from 'react-router';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import { supabase } from '../supabase-client';
-
-interface PostInput {
-  title: string;
-  body: string;
-  image_url?: string;
-}
+import type { PostInput } from '../types';
 
 const sanitizeFileName = (fileName: string): string => {
   return fileName
     .toLowerCase()
-    .replace(/[^a-z0-9]/g, '-') // Replace special chars with hyphens
-    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, ''); // Remove leading/trailing hyphens
+    .replace(/[^a-z0-9]/g, '-')
+    .replace(/-+/g, '-')
+    .replace(/^-|-$/g, '');
 };
 
 const createPost = async (post: PostInput, imageFile: File) => {

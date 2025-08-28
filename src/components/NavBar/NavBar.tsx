@@ -4,7 +4,6 @@ import { useAuth } from '../../context/AuthContext';
 import { ProfileSection } from './components/ProfileSection';
 import { MobileDrawer } from './components/MobileDrawer';
 import { SearchBar } from './components/SearchBar';
-// import { ThemeToggle } from './components/ThemeToggle';
 import { LoginButton } from './components/LoginButton';
 import { Link } from 'react-router';
 

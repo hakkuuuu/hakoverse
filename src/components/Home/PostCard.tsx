@@ -19,7 +19,7 @@ export const PostCard = ({ post, onVote, isVoting }: PostCardProps) => (
       <img
         src={post.image_url}
         alt={post.title}
-        className="rounded-xl my-2 max-h-[360px] w-full mx-auto object-cover"
+        className="rounded-xl my-2 max-h-[440px] w-full mx-auto object-cover"
       />
     )}
 
